@@ -1,0 +1,4 @@
+it:
+  BlogEntry:
+    FROMDT: "Data di inizio pubblicazione"
+    TODT: "Data di fine pubblicazione"

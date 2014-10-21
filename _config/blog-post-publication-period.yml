@@ -1,0 +1,9 @@
+---
+Name: blog-post-publication-period
+---
+BlogEntry:
+  extensions:
+    - AdminPublicationPostDate
+BlogTree_Controller:
+  extensions:
+    - FilterByDateBlogTree

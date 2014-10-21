@@ -1,0 +1,15 @@
+{
+    "name": "zirak/blog-post-publication-period",
+    "description": "This module will allow you to set the period of time for the publishing of your post.",
+    "type": "silverstripe-module",
+    "keywords": ["silverstripe", "blog", "post", "publish", "date", "period", "publish period", "publish date", "publish time", "publish period post"],
+    "authors": [
+        {"name": "Daniele Manassero - Zirak"},
+        {"email": "daniele.manassero@gmail.com"}
+    ],
+    "require": {
+        "silverstripe/framework": "3.1.*",
+        "silverstripe/cms": "3.1.*",
+        "silverstripe/blog": "*"
+    }
+}
