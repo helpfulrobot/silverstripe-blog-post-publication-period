@@ -11,8 +11,8 @@ This module will allow you to set the period of time for the publishing of your 
 
 ##Configuration Options
 
-When you insert a post, you can put the start publication date and the end publication date from the "Published Period" tab.
-For filtering the posts, you must call the "FilteredBlogEntries" function in BlogEntry.ss
+When you add a post, you can insert the start publication date and the end publication date from the "Published Period" tab.
+In order to filtering posts, you must call the "FilteredBlogEntries" function in BlogEntry.ss
 
 ```php
 <% if FilteredBlogEntries %>
