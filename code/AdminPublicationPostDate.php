@@ -5,14 +5,16 @@
  * @creation-date 09/07/2014
  */
 
-class AdminPublicationPostDate extends DataExtension {
+class AdminPublicationPostDate extends DataExtension
+{
     
     private static $db = array(
         "FromDate" => "Date",
         "ToDate" => "Date",
     );
     
-    public function updateCMSFields(\FieldList $fields) {
+    public function updateCMSFields(\FieldList $fields)
+    {
         parent::updateCMSFields($fields);
         
         $field = new DateField('FromDate');
@@ -32,11 +34,11 @@ class AdminPublicationPostDate extends DataExtension {
         $field->setTitle(_t("BlogEntry.TODT", "Date"));
         $fields->addFieldToTab('Root.PublishedPeriod', $field);
     }
-    
 }
 
 
-class FilterByDateBlogTree extends Extension {
+class FilterByDateBlogTree extends Extension
+{
     
     /**
     * Determine selected BlogEntry items to show on this page
@@ -44,34 +46,35 @@ class FilterByDateBlogTree extends Extension {
     * @param int $limit
     * @return PaginatedList
     */
-    public function FilteredBlogEntries($limit = null) {
+    public function FilteredBlogEntries($limit = null)
+    {
         require_once('Zend/Date.php');
 
-        if($limit === null) $limit = BlogTree::$default_entries_limit;
+        if ($limit === null) {
+            $limit = BlogTree::$default_entries_limit;
+        }
 
         // only use freshness if no action is present (might be displaying tags or rss)
         if ($this->owner->LandingPageFreshness && !$this->owner->request->param('Action')) {
-                $d = new Zend_Date(SS_Datetime::now()->getValue());
-                $d->sub($this->owner->LandingPageFreshness, Zend_Date::MONTH);
-                $date = $d->toString('YYYY-MM-dd');
+            $d = new Zend_Date(SS_Datetime::now()->getValue());
+            $d->sub($this->owner->LandingPageFreshness, Zend_Date::MONTH);
+            $date = $d->toString('YYYY-MM-dd');
 
-                $filter = "\"BlogEntry\".\"Date\" > '$date'";
+            $filter = "\"BlogEntry\".\"Date\" > '$date'";
         } else {
-                $filter = '';
+            $filter = '';
         }
         // allow filtering by author field and some blogs have an authorID field which
         // may allow filtering by id
-        if(isset($_GET['author']) && isset($_GET['authorID'])) {
-                $author = Convert::raw2sql($_GET['author']);
-                $id = Convert::raw2sql($_GET['authorID']);
+        if (isset($_GET['author']) && isset($_GET['authorID'])) {
+            $author = Convert::raw2sql($_GET['author']);
+            $id = Convert::raw2sql($_GET['authorID']);
 
-                $filter .= " \"BlogEntry\".\"Author\" LIKE '". $author . "' OR \"BlogEntry\".\"AuthorID\" = '". $id ."'";
-        }
-        else if(isset($_GET['author'])) {
-                $filter .=  " \"BlogEntry\".\"Author\" LIKE '". Convert::raw2sql($_GET['author']) . "'";
-        }
-        else if(isset($_GET['authorID'])) {
-                $filter .=  " \"BlogEntry\".\"AuthorID\" = '". Convert::raw2sql($_GET['authorID']). "'";
+            $filter .= " \"BlogEntry\".\"Author\" LIKE '". $author . "' OR \"BlogEntry\".\"AuthorID\" = '". $id ."'";
+        } elseif (isset($_GET['author'])) {
+            $filter .=  " \"BlogEntry\".\"Author\" LIKE '". Convert::raw2sql($_GET['author']) . "'";
+        } elseif (isset($_GET['authorID'])) {
+            $filter .=  " \"BlogEntry\".\"AuthorID\" = '". Convert::raw2sql($_GET['authorID']). "'";
         }
 
         $date = $this->owner->SelectedDate();
@@ -82,14 +85,14 @@ class FilterByDateBlogTree extends Extension {
    /*
     * 
     */
-   static function FilterByDate($class, $filter, $limit, $order){
-        $filter .= ' AND (CURDATE() >= FromDate AND (CURDATE() <= ToDate || ToDate IS NULL))';
+   public static function FilterByDate($class, $filter, $limit, $order)
+   {
+       $filter .= ' AND (CURDATE() >= FromDate AND (CURDATE() <= ToDate || ToDate IS NULL))';
         
-        $entries = $class::get()->where($filter)->sort($order);
+       $entries = $class::get()->where($filter)->sort($order);
         
-    	$list = new PaginatedList($entries, Controller::curr()->request);
-    	$list->setPageLength($limit);
-    	return $list;
+       $list = new PaginatedList($entries, Controller::curr()->request);
+       $list->setPageLength($limit);
+       return $list;
    }
-    
 }
